@@ -34,7 +34,6 @@ export class Tab2Page implements OnInit {
   addItem() {
     if (this.submitting) return;
 
-    // 新增：表单验证逻辑
     if (!this.itemName.trim() || !this.supplierName.trim()) {
       alert('Error: Item name and supplier name are required!');
       return;
@@ -46,9 +45,30 @@ export class Tab2Page implements OnInit {
     }
 
     this.submitting = true;
-    setTimeout(() => {
-      this.submitting = false;
-    }, 1000);
+
+    // 新增：构造提交数据 + 调用API
+    const newItem = {
+      item_name: this.itemName,
+      category: this.category,
+      quantity: this.quantity,
+      price: this.price,
+      supplier_name: this.supplierName,
+      stock_status: this.stockStatus,
+      featured_item: this.featuredItem,
+      special_note: this.specialNote
+    };
+
+    this.api.addItem(newItem).subscribe({
+      next: () => {
+        alert('Success: Item added successfully!');
+        this.resetForm();
+        this.submitting = false;
+      },
+      error: (err) => {
+        alert('Error: Failed to add item. ' + (err.error?.message || 'Server error'));
+        this.submitting = false;
+      }
+    });
   }
 
   resetForm() {
