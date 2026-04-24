@@ -1,12 +1,18 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>Add New Item</ion-title>
-    <!-- 无帮助按钮 -->
+    <!-- 新增：帮助按钮 -->
+    <ion-buttons slot="end">
+      <ion-button (click)="showHelp()">
+        <ion-icon name="help-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
   <ion-list>
+
     <ion-item>
       <ion-label position="stacked">Item Name *</ion-label>
       <ion-input [(ngModel)]="itemName" required></ion-input>
@@ -54,6 +60,7 @@
       <ion-label position="stacked">Special Note</ion-label>
       <ion-input [(ngModel)]="specialNote"></ion-input>
     </ion-item>
+
   </ion-list>
 
   <div class="ion-padding">

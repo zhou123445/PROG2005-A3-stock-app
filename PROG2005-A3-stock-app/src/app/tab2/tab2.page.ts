@@ -46,7 +46,6 @@ export class Tab2Page implements OnInit {
 
     this.submitting = true;
 
-    // 新增：构造提交数据 + 调用API
     const newItem = {
       item_name: this.itemName,
       category: this.category,
@@ -82,4 +81,10 @@ export class Tab2Page implements OnInit {
     this.specialNote = '';
   }
 
+  showHelp() {
+    alert(`📘 Add New Item Help
+• All fields except Special Note are required
+• Price and Quantity must be greater than 0
+• Set Featured Item = 1 to mark as featured`);
+  }
 }
