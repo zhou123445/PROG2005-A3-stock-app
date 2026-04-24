@@ -32,6 +32,19 @@ export class Tab2Page implements OnInit {
   ngOnInit() {}
 
   addItem() {
+    if (this.submitting) return;
+
+    // 新增：表单验证逻辑
+    if (!this.itemName.trim() || !this.supplierName.trim()) {
+      alert('Error: Item name and supplier name are required!');
+      return;
+    }
+
+    if (this.quantity < 0 || this.price <= 0) {
+      alert('Error: Quantity and price must be positive numbers!');
+      return;
+    }
+
     this.submitting = true;
     setTimeout(() => {
       this.submitting = false;
