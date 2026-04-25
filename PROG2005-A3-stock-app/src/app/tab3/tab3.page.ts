@@ -67,10 +67,76 @@ export class Tab3Page implements OnInit {
     }
   }
 
-  // 仅定义方法壳，无业务逻辑
-  editItem(item: InventoryItem): void {}
-  cancelEdit(): void {}
-  saveEdit(): void {}
+  // 实现编辑商品逻辑
+  editItem(item: InventoryItem): void {
+    this.editMode = true;
+    this.selectedItem = item;
+
+    this.itemName = item.item_name;
+    this.category = item.category;
+    this.quantity = item.quantity;
+    this.price = item.price;
+    this.supplierName = item.supplier_name;
+    this.stockStatus = item.stock_status;
+    this.featuredItem = item.featured_item;
+    this.specialNote = item.special_note || '';
+
+    window.scrollTo(0, 0);
+  }
+
+  // 实现取消编辑逻辑
+  cancelEdit(): void {
+    this.editMode = false;
+    this.selectedItem = null;
+    this.resetForm();
+  }
+
+  // 实现保存编辑逻辑
+  saveEdit(): void {
+    if (!this.selectedItem || !this.itemName.trim() || !this.supplierName.trim()) {
+      alert('Error: Item name and supplier are required!');
+      return;
+    }
+    if (this.quantity < 0 || this.price <= 0) {
+      alert('Error: Quantity & price must be positive!');
+      return;
+    }
+
+    const updatedData = {
+      item_name: this.itemName,
+      category: this.category,
+      quantity: this.quantity,
+      price: this.price,
+      supplier_name: this.supplierName,
+      stock_status: this.stockStatus,
+      featured_item: this.featuredItem,
+      special_note: this.specialNote
+    };
+
+    this.api.updateItem(this.selectedItem.item_name, updatedData).subscribe({
+      next: () => {
+        alert('Success: Item updated!');
+        this.loadInventory();
+        this.cancelEdit();
+      },
+      error: (err) => {
+        alert('Error: Update failed. ' + (err.error?.message || 'Server error'));
+      }
+    });
+  }
+
+  // 实现重置表单逻辑
+  resetForm(): void {
+    this.itemName = '';
+    this.category = Category.Electronics;
+    this.quantity = 0;
+    this.price = 0;
+    this.supplierName = '';
+    this.stockStatus = StockStatus.InStock;
+    this.featuredItem = 0;
+    this.specialNote = '';
+  }
+
+  // 仍为方法壳，未实现删除逻辑
   deleteItem(item: InventoryItem): void {}
-  resetForm(): void {}
 }
