@@ -14,8 +14,13 @@ import { InventoryItem, Category, StockStatus } from '../models/inventory.model'
 })
 export class Tab3Page implements OnInit {
 
-  // 实现删除商品基础逻辑（未限制Laptop删除）
+  // 实现禁止删除Laptop的逻辑
   deleteItem(item: InventoryItem): void {
+    if (item.item_name.toLowerCase() === 'laptop') {
+      alert('Error: Laptop cannot be deleted!');
+      return;
+    }
+
     if (!confirm(`Are you sure you want to delete "${item.item_name}"?`)) {
       return;
     }
